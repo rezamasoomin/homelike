@@ -1,7 +1,7 @@
 const userModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {JWTSecret}=require('../config/index');
+const {JWTSecret} = require('../config/index');
 
 module.exports = {
     register,
@@ -29,11 +29,7 @@ async function authentication(email, password) {
     if (!user) return ({message: 'user not found!', status: 404});
     let passwordIsValid = bcrypt.compareSync(password, user.password);
     if (!passwordIsValid) return ({message: 'authentication failed,password is not valid!', status: 404});
-
-    let token = jwt.sign({id: user._id},JWTSecret, {
-        expiresIn: 86400 // expires in 24 hours
-    });
-
+    let token = jwt.sign({id: user._id}, JWTSecret);
     return ({message: token, status: 200})
 
 
