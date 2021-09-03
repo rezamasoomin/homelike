@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {testDatabaseURL,testDbName}=require('../config/index');
+const {testDatabaseURL, testDbName} = require('../config/index');
 mongoose.promise = global.Promise;
 
 async function removeAllCollections() {
@@ -30,17 +30,17 @@ async function dropAllCollections() {
 
 module.exports = {
     setupDB() {
-
         // Connect to Mongoose
         beforeAll(async () => {
-            const url =testDatabaseURL+testDbName;
-            await mongoose.connect(url, { useNewUrlParser: true });
+            const url = testDatabaseURL + testDbName;
+            await mongoose.connect(url, {useNewUrlParser: true});
+            //await mongoose.apartments.createIndex();
         });
 
-      /*  // Cleans up database between each test
-        afterEach(async () => {
-            await removeAllCollections();
-        });*/
+        /*  // Cleans up database between each test
+          afterEach(async () => {
+              await removeAllCollections();
+          });*/
 
         // Disconnect Mongoose
         afterAll(async () => {

@@ -17,7 +17,7 @@ const apartmentSchema = new Schema({
     timestamps: true
 });
 
-
+apartmentSchema.index({location: "2dsphere"});
 
 
 model('apartment', apartmentSchema);

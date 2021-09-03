@@ -46,8 +46,8 @@ router.get('/search', async function (req, res, next) {
 
 
 router.get('/nearest', async function (req, res, next) {
-    let {longitude, latitude} = req.body;
-    const {apartments, status} = await apartmentService.nearestApartment(longitude, latitude);
+    let {longitude, latitude,maxDistance} = req.query;
+    const {apartments, status} = await apartmentService.nearestApartment(longitude, latitude,maxDistance);
     res.status(status).json({apartments: apartments});
 
 });

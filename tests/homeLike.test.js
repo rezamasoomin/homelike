@@ -250,7 +250,7 @@ describe('Apartment', () => {
                     }
                 );
             })
-    })
+    });
     it('GET /search -> apartments not found', () => {
         return request(app)
             .get('/search?rooms=2000&country=Germany&city=tehran')
@@ -263,6 +263,51 @@ describe('Apartment', () => {
                     }
                 );
             })
-    })
+    });
+
+    it('GET /nearest -> get nearest apartments with location', () => {
+        return request(app)
+            .get('/nearest?longitude=52.530121&latitude=13.414751&maxDistance=10000')
+            .expect(200)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {
+                        apartments:
+                            expect.arrayContaining([
+                                expect.objectContaining({
+                                    _id: expect.any(String),
+                                    user: expect.any(String),
+                                    title: expect.any(String),
+                                    country: expect.any(String),
+                                    city: expect.any(String),
+                                    rooms: expect.any(Number),
+                                    updatedAt: expect.any(String),
+                                    createdAt: expect.any(String),
+                                    location: expect.objectContaining({
+                                        _id: expect.any(String),
+                                        type: expect.any(String),
+                                        coordinates: expect.arrayContaining([expect.any(Number)])
+                                    }),
+                                    __v: expect.any(Number)
+                                })
+                            ])
+                    }
+                );
+            })
+    });
+
+    it('GET /nearest ->  apartments not found with location search', () => {
+        return request(app)
+            .get('/nearest?longitude=50.486416&latitude=10.169426&maxDistance=20000')
+            .expect(404)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {
+                        apartments:
+                            expect.arrayContaining([])
+                    }
+                );
+            })
+    });
 
 });

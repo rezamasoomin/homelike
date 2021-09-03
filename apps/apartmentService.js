@@ -31,6 +31,29 @@ async function searchApartment(filters) {
     }
 }
 
-async function nearestApartment(longitude, latitude) {
+async function nearestApartment(longitude, latitude, maxDistance) {
+
+    let location = {
+
+        '$nearSphere': {
+            '$geometry': {
+                'type': "Point",
+                'coordinates': [longitude, latitude]
+            },
+            '$minDistance': 0,
+            '$maxDistance': Number(maxDistance)
+        }
+
+    };
+
+    try {
+
+        let apartments = await apartmentModel.find({location: location});
+        if (!apartments.length) return ({apartments: apartments, status: 404});
+        return ({apartments: apartments, status: 200});
+    } catch (e) {
+        return ({apartments: e.message, status: 400})
+    }
+
 
 }
