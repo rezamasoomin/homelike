@@ -37,15 +37,15 @@ router.post('/createApartment', authMiddleWAre, async function (req, res, next) 
 });
 
 
-router.post('/search', async function (req, res, next) {
-    let filters = req.body;
+router.get('/search', async function (req, res, next) {
+    let filters = req.query;
     const {apartments, status} = await apartmentService.searchApartment(filters);
     res.status(status).json({apartments: apartments});
 
 });
 
 
-router.post('/nearest', async function (req, res, next) {
+router.get('/nearest', async function (req, res, next) {
     let {longitude, latitude} = req.body;
     const {apartments, status} = await apartmentService.nearestApartment(longitude, latitude);
     res.status(status).json({apartments: apartments});

@@ -70,7 +70,7 @@ describe('User', () => {
             .expect('Content-Type', /json/)
             .expect(200)
             .then(function (response) {
-                token=response.body.message;
+                token = response.body.message;
                 expect(response.body).toEqual(
                     expect.objectContaining({
                             message: expect.any(String)
@@ -90,10 +90,8 @@ describe('User', () => {
             .expect(404)
             .then(function (response) {
                 expect(response.body).toEqual(
-
                     {message: 'authentication failed,password is not valid!'}
-
-                    )
+                )
             })
     });
     it('POST /authentication  -> user not exist!', () => {
@@ -106,9 +104,7 @@ describe('User', () => {
             .expect(404)
             .then(function (response) {
                 expect(response.body).toEqual(
-
                     {message: 'user not found!'}
-
                 )
             })
     });
@@ -121,7 +117,7 @@ describe('Apartment', () => {
     it('POST /createApartment  -> create new apartment successfully', () => {
         return request(app)
             .post('/createApartment')
-            .set({"token":token})
+            .set({"token": token})
             .send({
                 "title": "test title",
                 "rooms": 2,
@@ -135,78 +131,78 @@ describe('Apartment', () => {
             .expect('Content-Type', /json/)
             .expect(201)
             .then(function (response) {
-                   expect(response.body).toEqual(
-                        expect.objectContaining({
-                                message: {
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                            message: {
+                                _id: expect.any(String),
+                                user: expect.any(String),
+                                title: expect.any(String),
+                                country: expect.any(String),
+                                city: expect.any(String),
+                                rooms: expect.any(Number),
+                                updatedAt: expect.any(String),
+                                createdAt: expect.any(String),
+                                location: expect.objectContaining({
                                     _id: expect.any(String),
-                                    user: expect.any(String),
-                                    title: expect.any(String),
-                                    country: expect.any(String),
-                                    city: expect.any(String),
-                                    rooms: expect.any(Number),
-                                    updatedAt: expect.any(String),
-                                    createdAt: expect.any(String),
-                                    location:expect.objectContaining({
-                                        "_id":expect.any(String),
-                                        type:expect.any(String),
-                                        coordinates:expect.arrayContaining([expect.any(Number)])
-                                    }),
-                                    __v: expect.any(Number)
-                                }
+                                    type: expect.any(String),
+                                    coordinates: expect.arrayContaining([expect.any(Number)])
+                                }),
+                                __v: expect.any(Number)
                             }
-                        )
-                    );
+                        }
+                    )
+                );
             })
     });
 
-     it('POST /createApartment  -> No token provided', () => {
-         return request(app).post('/createApartment')
-             .send({
-                 "title": "test title",
-                 "rooms": 2,
-                 "country": "Germany",
-                 "city": "berlin",
-                 "location": {
-                     "type": "Point",
-                     coordinates: [52.530121, 13.414750]
-                 }
-             })
-             .expect('Content-Type', /json/)
-             .expect(401)
-             .then(function (response) {
-                 expect(response.body).toEqual(
-                     {message: 'No token provided'}
-                 );
-             })
-     });
+    it('POST /createApartment  -> No token provided', () => {
+        return request(app).post('/createApartment')
+            .send({
+                "title": "test title",
+                "rooms": 2,
+                "country": "Germany",
+                "city": "berlin",
+                "location": {
+                    "type": "Point",
+                    coordinates: [52.530121, 13.414750]
+                }
+            })
+            .expect('Content-Type', /json/)
+            .expect(401)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {message: 'No token provided'}
+                );
+            })
+    });
 
-     it('POST /createApartment  -> user token is not valid!', () => {
-         return request(app)
-             .post('/createApartment')
-             .set({"token":'invalidToken'})
-             .send({
-                 "title": "test title",
-                 "rooms": 2,
-                 "country": "Germany",
-                 "city": "berlin",
-                 "location": {
-                     "type": "Point",
-                     coordinates: [52.530121, 13.414750]
-                 }
-             })
-             .expect('Content-Type', /json/)
-             .expect(501)
-             .then(function (response) {
-                 expect(response.body).toEqual(
-                     {message: 'user token is not valid!'}
-                 );
-             })
-     });
+    it('POST /createApartment  -> user token is not valid!', () => {
+        return request(app)
+            .post('/createApartment')
+            .set({"token": 'invalidToken'})
+            .send({
+                "title": "test title",
+                "rooms": 2,
+                "country": "Germany",
+                "city": "berlin",
+                "location": {
+                    "type": "Point",
+                    coordinates: [52.530121, 13.414750]
+                }
+            })
+            .expect('Content-Type', /json/)
+            .expect(501)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {message: 'user token is not valid!'}
+                );
+            })
+    });
 
     it('POST /createApartment  -> do not send required fields', () => {
         return request(app)
             .post('/createApartment')
-            .set({"token":token})
+            .set({"token": token})
             .send({
                 "title": "test title",
                 "rooms": 2,
@@ -224,5 +220,49 @@ describe('Apartment', () => {
                 );
             })
     });
+
+    it('GET /search -> get apartments with filters', () => {
+        return request(app)
+            .get('/search?rooms=2&country=Germany&city=berlin')
+            .expect(200)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {
+                        apartments:
+                            expect.arrayContaining([
+                                expect.objectContaining({
+                                    _id: expect.any(String),
+                                    user: expect.any(String),
+                                    title: expect.any(String),
+                                    country: expect.any(String),
+                                    city: expect.any(String),
+                                    rooms: expect.any(Number),
+                                    updatedAt: expect.any(String),
+                                    createdAt: expect.any(String),
+                                    location: expect.objectContaining({
+                                        _id: expect.any(String),
+                                        type: expect.any(String),
+                                        coordinates: expect.arrayContaining([expect.any(Number)])
+                                    }),
+                                    __v: expect.any(Number)
+                                })
+                            ])
+                    }
+                );
+            })
+    })
+    it('GET /search -> apartments not found', () => {
+        return request(app)
+            .get('/search?rooms=2000&country=Germany&city=tehran')
+            .expect(404)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {
+                        apartments:
+                            expect.arrayContaining([])
+                    }
+                );
+            })
+    })
 
 });

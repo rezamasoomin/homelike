@@ -1,6 +1,6 @@
-const apartmentModel=require('../models/apartmentModel');
+const apartmentModel = require('../models/apartmentModel');
 
-module.exports={
+module.exports = {
     createApartment,
     searchApartment,
     nearestApartment
@@ -21,8 +21,16 @@ async function createApartment(apartmentParams) {
 
 async function searchApartment(filters) {
 
+    try {
+        let apartments = await apartmentModel.find(filters);
+        if (!apartments.length) return ({apartments: apartments, status: 404});
+
+        return ({apartments: apartments, status: 200});
+    } catch (e) {
+        return ({apartments: e.message, status: 400})
+    }
 }
 
-async function nearestApartment(longitude,latitude) {
+async function nearestApartment(longitude, latitude) {
 
 }
