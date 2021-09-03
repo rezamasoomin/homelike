@@ -8,12 +8,11 @@ let emailValidator = (email) => {
 };
 
 
-
 const UserSchema = new Schema({
     name: {type: String, required: [true, "name is required!"]},
     email: {
         type: String,
-        unique:true,
+        unique: true,
         validate: {
             validator: emailValidator,
             message: 'Email validation failed'
@@ -31,20 +30,19 @@ UserSchema.pre("save", function (next) {
     let user = this;
     this.email = this.email.toLowerCase();
 
-        bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.genSalt(10, function (err, salt) {
+        if (err) return next(err);
+        bcrypt.hash(user.password, salt, function (err, hash) {
             if (err) return next(err);
-            bcrypt.hash(user.password, salt, function (err, hash) {
-                if (err) return next(err);
-                user.password = hash;
-                next()
-            })
+            user.password = hash;
+            next()
         })
+    })
 
 
 });
 
 model('user', UserSchema);
-
 
 
 module.exports = model('user');

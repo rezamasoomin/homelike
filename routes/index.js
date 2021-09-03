@@ -20,9 +20,9 @@ router.post('/register', async function (req, res, next) {
 });
 router.post('/authentication', async function (req, res, next) {
     let {email, password} = req.body;
-    const {user, status} = await userService.authentication(email, password);
-    user.password = undefined;
-    res.status(status).json({message: user});
+    const {message, status} = await userService.authentication(email, password);
+
+    res.status(status).json({message: message});
 });
 
 

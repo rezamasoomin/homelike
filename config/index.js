@@ -9,6 +9,7 @@ module.exports= {
     databaseURL: process.env.DATABASE_URI,
     dbName:process.env.DATABASE_NAME,
     testDatabaseURL:process.env.TEST_DATABASE_URI,
-    testDbName:process.env.TEST_DATABASE_NAME
+    testDbName:process.env.TEST_DATABASE_NAME,
+    JWTSecret:process.env.JWT_SECRET
 
 };

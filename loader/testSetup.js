@@ -37,10 +37,10 @@ module.exports = {
             await mongoose.connect(url, { useNewUrlParser: true });
         });
 
-        // Cleans up database between each test
+      /*  // Cleans up database between each test
         afterEach(async () => {
             await removeAllCollections();
-        });
+        });*/
 
         // Disconnect Mongoose
         afterAll(async () => {
