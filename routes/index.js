@@ -61,3 +61,9 @@ router.post('/addNewFavorite', authMiddleWAre, async function (req, res, next) {
     res.status(status).json({favorite: favorite});
 
 });
+router.get('/favorites', authMiddleWAre, async function (req, res, next) {
+    let {user} = req.body;
+    const {favoriteList, status} = await favoriteService.getFavoriteList(user);
+    res.status(status).json({favoriteList: favoriteList});
+
+});

@@ -374,7 +374,26 @@ describe('Favorites', () => {
             })
     });
 
-    it('POST /addNewFavorite  -> the apartment added before', () => {
-
+    it('GET /favorites  -> get favorite List of user', () => {
+        return request(app).get('/favorites')
+            .set({"token": token})
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        favoriteList: expect.arrayContaining([
+                            {
+                                _id: expect.any(String),
+                                user: expect.any(String),
+                                apartments: expect.arrayContaining([expect.any(String)]),
+                                __v: expect.any(Number),
+                                updatedAt: expect.any(String),
+                                createdAt: expect.any(String),
+                            }
+                        ])
+                    })
+                );
+            })
     })
 });
