@@ -21,7 +21,6 @@ router.post('/register', async function (req, res, next) {
 router.post('/authentication', async function (req, res, next) {
     let {email, password} = req.body;
     const {message, status} = await userService.authentication(email, password);
-
     res.status(status).json({message: message});
 });
 
@@ -33,7 +32,6 @@ router.post('/createApartment', authMiddleWAre, async function (req, res, next) 
     let apartmentParams = req.body;
     const {apartment, status} = await apartmentService.createApartment(apartmentParams);
     res.status(status).json({message: apartment});
-
 });
 
 
@@ -41,7 +39,6 @@ router.get('/search', async function (req, res, next) {
     let filters = req.query;
     const {apartments, status} = await apartmentService.searchApartment(filters);
     res.status(status).json({apartments: apartments});
-
 });
 
 
@@ -49,7 +46,6 @@ router.get('/nearest', async function (req, res, next) {
     let {longitude, latitude,maxDistance} = req.query;
     const {apartments, status} = await apartmentService.nearestApartment(longitude, latitude,maxDistance);
     res.status(status).json({apartments: apartments});
-
 });
 
 //--------------------------------------- favorites ------------------------------------------------
@@ -59,11 +55,9 @@ router.post('/addNewFavorite', authMiddleWAre, async function (req, res, next) {
     let {apartmentId,user} = req.body;
     const {favorite, status} = await favoriteService.addNewFavorite(apartmentId,user);
     res.status(status).json({favorite: favorite});
-
 });
-router.get('/favorites', authMiddleWAre, async function (req, res, next) {
-    let {user} = req.body;
-    const {favoriteList, status} = await favoriteService.getFavoriteList(user);
+router.get('/favorites', async function (req, res, next) {
+    const {favoriteList, status} = await favoriteService.getFavoriteList();
     res.status(status).json({favoriteList: favoriteList});
 
 });

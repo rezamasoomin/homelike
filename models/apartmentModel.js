@@ -14,7 +14,8 @@ const apartmentSchema = new Schema({
     city: {type: String, required: [true, "country is required!"]},
     location: {type: pointSchema},
 }, {
-    timestamps: true
+    timestamps: true,
+    versionKey: false
 });
 
 apartmentSchema.index({location: "2dsphere"});

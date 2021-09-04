@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const {databaseURL, dbName} = require('../config/index');
 const options = {
-    autoIndex: false, // Don't build indexes
     useNewUrlParser: true,
 };
 let db;
@@ -9,7 +8,6 @@ if (process.env.NODE_ENV === 'production' ? true : false) {
     db = mongoose.connect(databaseURL + dbName, options);
     db.Promise = global.Promise;
 }else{
-    console.log("start mongo db for test")
     const testSetup = require('../loader/testSetup').setupDB();
 
 }

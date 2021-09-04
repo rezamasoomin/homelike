@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     name: {type: String, required: [true, "name is required!"]},
     email: {
         type: String,
+        index: true,
         unique: true,
         validate: {
             validator: emailValidator,
@@ -22,10 +23,11 @@ const UserSchema = new Schema({
     },
     password: {type: String, required: [true, "password is required!"]}
 }, {
-    timestamps: true
+    timestamps: true,
+    versionKey: false
 });
 
-
+UserSchema.index({ "email": 1 }, { unique: true });
 UserSchema.pre("save", function (next) {
     let user = this;
     this.email = this.email.toLowerCase();
@@ -42,7 +44,6 @@ UserSchema.pre("save", function (next) {
 
 });
 
+
 model('user', UserSchema);
-
-
 module.exports = model('user');

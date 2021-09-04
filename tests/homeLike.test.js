@@ -22,8 +22,8 @@ describe('User', () => {
                                 name: expect.any(String),
                                 email: expect.any(String),
                                 updatedAt: expect.any(String),
-                                createdAt: expect.any(String),
-                                __v: expect.any(Number)
+                                createdAt: expect.any(String)
+
                             }
                         }
                     )
@@ -148,8 +148,7 @@ describe('Apartment', () => {
                                     _id: expect.any(String),
                                     type: expect.any(String),
                                     coordinates: expect.arrayContaining([expect.any(Number)])
-                                }),
-                                __v: expect.any(Number)
+                                })
                             }
                         }
                     )
@@ -234,7 +233,13 @@ describe('Apartment', () => {
                             expect.arrayContaining([
                                 expect.objectContaining({
                                     _id: expect.any(String),
-                                    user: expect.any(String),
+                                    user: expect.objectContaining({
+                                        _id: expect.any(String),
+                                        name: expect.any(String),
+                                        email: expect.any(String),
+                                        updatedAt: expect.any(String),
+                                        createdAt: expect.any(String),
+                                    }),
                                     title: expect.any(String),
                                     country: expect.any(String),
                                     city: expect.any(String),
@@ -245,8 +250,7 @@ describe('Apartment', () => {
                                         _id: expect.any(String),
                                         type: expect.any(String),
                                         coordinates: expect.arrayContaining([expect.any(Number)])
-                                    }),
-                                    __v: expect.any(Number)
+                                    })
                                 })
                             ])
                     }
@@ -278,7 +282,13 @@ describe('Apartment', () => {
                             expect.arrayContaining([
                                 expect.objectContaining({
                                     _id: expect.any(String),
-                                    user: expect.any(String),
+                                    user: expect.objectContaining({
+                                        _id: expect.any(String),
+                                        name: expect.any(String),
+                                        email: expect.any(String),
+                                        updatedAt: expect.any(String),
+                                        createdAt: expect.any(String),
+                                    }),
                                     title: expect.any(String),
                                     country: expect.any(String),
                                     city: expect.any(String),
@@ -289,8 +299,7 @@ describe('Apartment', () => {
                                         _id: expect.any(String),
                                         type: expect.any(String),
                                         coordinates: expect.arrayContaining([expect.any(Number)])
-                                    }),
-                                    __v: expect.any(Number)
+                                    })
                                 })
                             ])
                     }
@@ -330,7 +339,6 @@ describe('Favorites', () => {
                                 _id: expect.any(String),
                                 user: expect.any(String),
                                 apartments: expect.arrayContaining([expect.any(String)]),
-                                __v: expect.any(Number),
                                 updatedAt: expect.any(String),
                                 createdAt: expect.any(String),
                             }
@@ -385,9 +393,28 @@ describe('Favorites', () => {
                         favoriteList: expect.arrayContaining([
                             {
                                 _id: expect.any(String),
-                                user: expect.any(String),
-                                apartments: expect.arrayContaining([expect.any(String)]),
-                                __v: expect.any(Number),
+                                user: expect.objectContaining({
+                                    _id: expect.any(String),
+                                    name: expect.any(String),
+                                    email: expect.any(String),
+                                    updatedAt: expect.any(String),
+                                    createdAt: expect.any(String),
+                                }),
+                                apartments: expect.arrayContaining([expect.objectContaining({
+                                    _id: expect.any(String),
+                                    user: expect.any(String),
+                                    title: expect.any(String),
+                                    country: expect.any(String),
+                                    city: expect.any(String),
+                                    rooms: expect.any(Number),
+                                    updatedAt: expect.any(String),
+                                    createdAt: expect.any(String),
+                                    location: expect.objectContaining({
+                                        _id: expect.any(String),
+                                        type: expect.any(String),
+                                        coordinates: expect.arrayContaining([expect.any(Number)])
+                                    })
+                                })]),
                                 updatedAt: expect.any(String),
                                 createdAt: expect.any(String),
                             }

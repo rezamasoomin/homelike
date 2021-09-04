@@ -6,7 +6,8 @@ const FavoriteSchema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: 'user', required: [true, "user is required!"], unique: true},
     apartments: [{type: Schema.Types.ObjectId, ref: 'apartment'}],
 }, {
-    timestamps: true
+    timestamps: true,
+    versionKey: false
 });
 
 
@@ -19,14 +20,14 @@ FavoriteSchema.pre("save", function (next) {
 });
 FavoriteSchema.pre("findOneAndUpdate", function (next) {
 
-    let apartmentId = this['_update']['$push']['apartments'];
+    let apartmentId = this['_update']['$addToSet']['apartments'];
 
     apartmentModel.findById(apartmentId).then(function (apartment) {
-        if (!apartment) return next({message:"apartment not found!",status:404});
-        next()
+        if (!apartment) return next({message: "apartment not found!", status: 404});
+        next();
+
     })
 });
-
 
 
 model('favorite', FavoriteSchema);
