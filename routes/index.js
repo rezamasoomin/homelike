@@ -51,3 +51,13 @@ router.get('/nearest', async function (req, res, next) {
     res.status(status).json({apartments: apartments});
 
 });
+
+//--------------------------------------- favorites ------------------------------------------------
+const favoriteService=require('../apps/favoriteService');
+
+router.post('/addNewFavorite', authMiddleWAre, async function (req, res, next) {
+    let {apartmentId,user} = req.body;
+    const {favorite, status} = await favoriteService.addNewFavorite(apartmentId,user);
+    res.status(status).json({favorite: favorite});
+
+});

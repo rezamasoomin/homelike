@@ -1,7 +1,8 @@
 const request = require('supertest');
 const app = require('../routes/index');
 const Mongo = require('../loader/mongoDB');
-let token;
+var token;
+var apartmentId;
 describe('User', () => {
 
     it('POST /register  -> create new user', () => {
@@ -131,6 +132,7 @@ describe('Apartment', () => {
             .expect('Content-Type', /json/)
             .expect(201)
             .then(function (response) {
+                apartmentId = response.body.message._id;
                 expect(response.body).toEqual(
                     expect.objectContaining({
                             message: {
@@ -310,4 +312,69 @@ describe('Apartment', () => {
             })
     });
 
+});
+
+describe('Favorites', () => {
+    it('POST /addNewFavorite  -> add a apartment to favorite list successfully', () => {
+        return request(app).post('/addNewFavorite')
+            .set({"token": token})
+            .send({
+                apartmentId: apartmentId
+            })
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                            favorite: {
+                                _id: expect.any(String),
+                                user: expect.any(String),
+                                apartments: expect.arrayContaining([expect.any(String)]),
+                                __v: expect.any(Number),
+                                updatedAt: expect.any(String),
+                                createdAt: expect.any(String),
+                            }
+                        }
+                    )
+                );
+            })
+    })
+
+    it('POST /addNewFavorite  -> user token is not valid!', () => {
+        return request(app).post('/addNewFavorite')
+            .set({"token": 'invalid token'})
+            .send({
+                apartmentId: apartmentId
+            })
+            .expect('Content-Type', /json/)
+            .expect(501)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {message: 'user token is not valid!'}
+                );
+
+
+            })
+    });
+
+    it('POST /addNewFavorite  -> apartment not found!', () => {
+        return request(app).post('/addNewFavorite')
+            .set({"token": token})
+            .send({
+                apartmentId: '613345e3466437130a1acab2'
+            })
+            .expect('Content-Type', /json/)
+            .expect(404)
+            .then(function (response) {
+                expect(response.body).toEqual(
+                    {favorite: 'apartment not found!'}
+                );
+
+
+            })
+    });
+
+    it('POST /addNewFavorite  -> the apartment added before', () => {
+
+    })
 });
