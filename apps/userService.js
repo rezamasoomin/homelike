@@ -72,8 +72,8 @@ async function register(userParams) {
 
 
 /**
- * @api {post} /login user login
- * @apiName Login
+ * @api {post} /authentication user login
+ * @apiName authentication
  * @apiGroup 1.UserService
  * @apiVersion 0.1.0
  *
